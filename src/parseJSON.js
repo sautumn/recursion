@@ -21,7 +21,7 @@ var parseJSON = function(json) {
 			if (reItems[1] === '') { //if the array is empty
 				return result; //return an empty array 
 			}
-			//console.log(reItems[1]);
+
 			var items = reItems[1].split(','); //remove " and ' and whitespace
 
 			var newitems = reItems[1].split('');
@@ -46,31 +46,9 @@ var parseJSON = function(json) {
 					elemBuilder.push(newitems[i]);
 				}
 			}
-			//console.log(elems);
-			
-
-
-
-
-			
-			// var newRe = /{(.*?)(},?|$)|"(.*?)",|(?!,|\s)(.*?)(,|$)/g;
-			// var test;
-			// while ((test = newRe.exec(reItems[1]))!== null){
-			// 	console.log(test);
-			// }
-			// console.log("test:" +test[1]);
 			for (var i = 0, length = items.length; i < length; i++) {
-				//if there are double quotes surrounding, add as a string
-				//console.log("items: " + items[i]);
 				result.push(checkTypes(items[i]));
-				// if ((/"(.*?)"/).test(items[i]) === true) {
-				// 	items[i] = (/"(.*?)"$/).exec(items[i])[1]; //get everything between quotes and 2nd in regex array
-				// 	result.push(items[i]);
-				// } else {
-				// 	//TO DO unless true or false or whatever ********
-				// 	items[i] = checkTypes(items[i]);
-				// 	result.push(items[i]);
-				// }
+
 			}
 			json = json.replace(re, ''); //remove selected items from string
 			tokenNum = json.length; //update length
@@ -83,24 +61,21 @@ var parseJSON = function(json) {
 			var re = /\{(.*?)\}$/; //get everything between {}
 			var reItems = re.exec(json);
 
-			//console.log("reitrmes: " + reItems[1]);
 			//do something if the obj format is wrong
 			if (reItems === null) {
-				//throw error if brackets are whack****************************************************
+				//throw error if brackets are incorrect
 				console.log("Broken");
 				return;
 			}
 			if (reItems[1] === '') { //if the obj is empty
 				return {}; //return an empty obj
 			}
-			//console.log(reItems[1]);
+
 			//capture object format w/o split
 			var testRe = /"(.*?)":(\[.*\]|.*?)(?:,|$)/g;
 			var test;
-			// var newRe = /"(.*?),|"(.*?)$/g;
-		//console.log(reItems[1]);
+
 			while ((test = testRe.exec(reItems[1])) !== null) {
-				//console.log(test[1] + "::::"+test[2]);
 				//if the the test2 has []
 				result[test[1]] = checkTypes(test[2]);
 
@@ -154,30 +129,33 @@ var parseJSON = function(json) {
 	//console.log(result);
 	return result;
 };
-parseableStrings = [
- //basic stuff
-  '[]',
-  '{"foo": ""}',
-  '{}',
- '{"foo": "bar"}',
-  '[false, true, null, "test", 5]',
-  '{"a": "b", "c": "d"}',
- '[null,false,true]',
-  '{"foo": true, "bar": false, "baz": null}',
-  '[1, 0, -1, -0.3, 0.3, 1343.32, 3345, 0.00011999999999999999]',
-  '{}',
-  '{"boolean, true": true, "boolean, false": false, "null": null }',
-  '{"a":{"b":"c"}, "test":2}',
-  '{"a":{"b":"c"}}',
-  '{"a":["b", "c"]}',
-  '[{"a":"b"}, {"c":"d"}, {"test":"this"}]',
-  '{"a":[],"c": {}, "b": true}',
-  '[[[["foo"]]]]'
-  ];
 
-  for (var i = 0, length = parseableStrings.length; i < length; i++) {
-  	console.log(i + ': Expected ' + JSON.parse(parseableStrings[i]) + " to equal " + parseJSON(parseableStrings[i]) + " : " + typeof parseJSON(parseableStrings[i]));
-  	console.log(_.isEqual(JSON.parse(parseableStrings[i]),parseJSON(parseableStrings[i])));
-  } 
+//Individual test cases for parseJSON
+
+// parseableStrings = [
+//  //basic stuff
+//   '[]',
+//   '{"foo": ""}',
+//   '{}',
+//  '{"foo": "bar"}',
+//   '[false, true, null, "test", 5]',
+//   '{"a": "b", "c": "d"}',
+//  '[null,false,true]',
+//   '{"foo": true, "bar": false, "baz": null}',
+//   '[1, 0, -1, -0.3, 0.3, 1343.32, 3345, 0.00011999999999999999]',
+//   '{}',
+//   '{"boolean, true": true, "boolean, false": false, "null": null }',
+//   '{"a":{"b":"c"}, "test":2}',
+//   '{"a":{"b":"c"}}',
+//   '{"a":["b", "c"]}',
+//   '[{"a":"b"}, {"c":"d"}, {"test":"this"}]',
+//   '{"a":[],"c": {}, "b": true}',
+//   '[[[["foo"]]]]'
+//   ];
+
+//   for (var i = 0, length = parseableStrings.length; i < length; i++) {
+//   	console.log(i + ': Expected ' + JSON.parse(parseableStrings[i]) + " to equal " + parseJSON(parseableStrings[i]) + " : " + typeof parseJSON(parseableStrings[i]));
+//   	console.log(_.isEqual(JSON.parse(parseableStrings[i]),parseJSON(parseableStrings[i])));
+//   } 
 
  
